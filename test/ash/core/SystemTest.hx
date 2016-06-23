@@ -1,5 +1,6 @@
 package ash.core;
 
+import haxe.Constraints.Function;
 import org.hamcrest.MatchersBase;
 
 import ash.core.Engine;
@@ -38,7 +39,7 @@ class SystemTest extends MatchersBase
         assertThat(engine.systems, hasItems([system1, system2]));
     }
 
-    private function shouldCall<T>(f:T)
+    private function shouldCall<T:Function>(f:T)
     {
         return new ShouldCallHelper(f, this);
     }
@@ -183,6 +184,18 @@ class SystemTest extends MatchersBase
         engine.removeAllSystems();
         assertThat(engine.getSystem(MockSystem), nullValue());
         assertThat(engine.getSystem(EmptySystem), nullValue());
+    }
+
+    @Test
+    public function removeAllSystemsSetsNextToNull():Void
+    {
+        var system1 : System = new System();
+        engine.addSystem( system1, 1 );
+        var system2 : System = new System();
+        engine.addSystem( system2, 2 );
+        assertThat( system1.next, sameInstance( system2 ) );
+        engine.removeAllSystems();
+        assertThat( system1.next, nullValue() );
     }
 
     @Test
