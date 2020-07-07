@@ -28,7 +28,7 @@ class Entity
     /**
      * Optional, give the entity a name. This can help with debugging and with serialising the entity.
      */
-    public var name(default, set_name):String;
+    public var name(default, set):String;
     /**
      * This signal is dispatched when a component is added to the entity.
      */
@@ -86,7 +86,7 @@ class Entity
      *     .add(new Display(new PlayerClip());</code>
      */
 
-    public function add<T:I, I>(component:T, componentClass:Class<I> = null):Entity
+    public function add<T>(component:T, componentClass:Class<Dynamic> = null):Entity
     {
         if (componentClass == null)
             componentClass = Type.getClass(component);
@@ -106,7 +106,7 @@ class Entity
      * @return the component, or null if the component doesn't exist in the entity
      */
 
-    public function remove<T:I, I>(componentClass:Class<I>):T
+    public function remove<T>(componentClass:Class<Dynamic>):T
     {
         var component:T = components.get(componentClass);
         if (component != null)
@@ -125,7 +125,7 @@ class Entity
      * @return The component, or null if none was found.
      */
 
-    public function get<T:I, I>(componentClass:Class<I>):T
+    public function get<T>(componentClass:Class<Dynamic>):T
     {
         return components.get(componentClass);
     }
